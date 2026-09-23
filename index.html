@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rafael Quintero — Maestro Mayor de Obras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B1220;
+    --bg-panel: #101A2C;
+    --bg-panel-2: #16233A;
+    --line: #27354C;
+    --text: #F1EFE8;
+    --text-dim: #9AA7BC;
+    --accent: #E0902E;
+    --accent-soft: #B9761F;
+    --accent-2: #5E8FA3;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  :root:not([data-theme="light"]) { color-scheme: dark; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #F3F0E8;
+      --bg-panel: #FFFFFF;
+      --bg-panel-2: #EAE4D6;
+      --line: #DAD2BE;
+      --text: #16202E;
+      --text-dim: #665F4E;
+      --accent: #C9711A;
+      --accent-soft: #A85E15;
+      --accent-2: #35677A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B1220; --bg-panel: #101A2C; --bg-panel-2: #16233A;
+    --line: #27354C; --text: #F1EFE8; --text-dim: #9AA7BC;
+    --accent: #E0902E; --accent-soft: #B9761F; --accent-2: #5E8FA3;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', -apple-system, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, .display { font-family: 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: -0.01em; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+  /* Blueprint grid backdrop for hero */
+  .hero {
+    position: relative;
+    padding: 96px 0 88px;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--accent-2) 10%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--accent-2) 10%, transparent) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: center top;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 20%, color-mix(in srgb, var(--bg) 10%, transparent), var(--bg) 72%);
+    pointer-events: none;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 32px;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  .topbar.scrolled { border-bottom-color: var(--line); }
+  .mark { font-family: 'Fraunces', serif; font-size: 1.1rem; letter-spacing: 0.02em; }
+  .mark em { font-style: italic; color: var(--accent); }
+  .topnav { display: flex; gap: 28px; font-size: 0.92rem; color: var(--text-dim); }
+  .topnav a { transition: color 0.2s ease; }
+  .topnav a:hover, .topnav a:focus-visible { color: var(--text); }
+  @media (max-width: 640px) { .topnav { display: none; } }
+
+  /* ---------- Hero content ---------- */
+  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 64px; align-items: center; }
+  .hero-left { opacity: 0; transform: translateY(14px); animation: rise 0.8s ease 0.15s forwards; }
+  .hero-right { opacity: 0; transform: translateY(14px) scale(0.97); animation: rise 0.9s ease 0.35s forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero-left, .hero-right { animation: none; opacity: 1; transform: none; } }
+
+  .eyebrow { font-size: 0.85rem; color: var(--accent-2); margin-bottom: 18px; letter-spacing: 0.02em; }
+  .hero-left h1 { font-size: clamp(2.5rem, 5vw, 3.9rem); line-height: 1.06; margin-bottom: 22px; }
+  .hero-left h1 .last { color: var(--accent); font-style: italic; }
+  .role { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 20px; max-width: 48ch; }
+  .bio { font-size: 1.02rem; color: var(--text-dim); max-width: 54ch; margin-bottom: 34px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { padding: 13px 26px; border-radius: 3px; font-size: 0.94rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease; }
+  .btn-solid { background: var(--accent); color: #1A1206; }
+  .btn-solid:hover { transform: translateY(-2px); }
+  .btn-outline { border: 1px solid var(--line); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent-soft); transform: translateY(-2px); }
+
+  .photo-frame { position: relative; aspect-ratio: 4/5; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(160deg, var(--bg-panel-2), var(--bg-panel) 60%); }
+  .photo-frame svg, .photo-frame img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .photo-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 18px; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); font-size: 0.82rem; color: #F1EFE8; display: flex; justify-content: space-between; }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-right { max-width: 320px; margin: 0 auto; }
+  }
+
+  /* ---------- Section shell ---------- */
+  section { padding: 84px 0; border-top: 1px solid var(--line); }
+  .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 44px; }
+  .sec-head h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+  .sec-num { color: var(--text-dim); font-size: 0.88rem; }
+
+  /* ---------- Trayectoria (timeline) ---------- */
+  .timeline { position: relative; display: flex; flex-direction: column; gap: 0; }
+  .timeline::before {
+    content: "";
+    position: absolute; left: 9px; top: 6px; bottom: 6px;
+    width: 1px; background: var(--line);
+  }
+  .tl-item { position: relative; padding: 0 0 40px 40px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: 0; top: 2px;
+    width: 19px; height: 19px; border-radius: 50%;
+    background: var(--bg-panel); border: 1.5px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tl-dot::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  .tl-tag { font-size: 0.78rem; color: var(--accent-2); letter-spacing: 0.03em; margin-bottom: 6px; text-transform: uppercase; }
+  .tl-item h3 { font-size: 1.15rem; margin-bottom: 6px; }
+  .tl-item .org { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 10px; }
+  .tl-item p { font-size: 0.95rem; color: var(--text-dim); max-width: 62ch; }
+
+  /* ---------- Stack (software) ---------- */
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .stack-item { border: 1px solid var(--line); border-radius: 4px; padding: 20px 18px; background: var(--bg-panel); transition: border-color 0.25s ease, transform 0.25s ease; }
+  .stack-item:hover { border-color: var(--accent-soft); transform: translateY(-3px); }
+  .stack-item .glyph { width: 30px; height: 30px; margin-bottom: 14px; color: var(--accent); }
+  .stack-item .name { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
+  .stack-item .level { font-size: 0.78rem; color: var(--text-dim); }
+
+  /* ---------- Cualidades (skills checklist) ---------- */
+  .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 32px; }
+  @media (max-width: 700px) { .skills-grid { grid-template-columns: 1fr; } }
+  .skill-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 4px; border-bottom: 1px solid var(--line); }
+  .skill-item .check { flex: none; width: 22px; height: 22px; color: var(--accent); margin-top: 2px; }
+  .skill-item .txt { font-size: 0.98rem; }
+  .skill-item .txt strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .skill-item .txt span { color: var(--text-dim); font-size: 0.86rem; }
+
+  /* ---------- Projects ---------- */
+  .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  @media (max-width: 760px) { .proj-grid { grid-template-columns: 1fr; } }
+  .proj-card { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--bg-panel); display: flex; flex-direction: column; transition: border-color 0.25s ease, transform 0.25s ease; }
+  .proj-card:hover { border-color: var(--accent-soft); transform: translateY(-4px); }
+  .proj-thumb { aspect-ratio: 16/10; background: var(--bg-panel-2); overflow: hidden; }
+  .proj-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proj-card:hover .proj-thumb img { transform: scale(1.04); }
+  .proj-body { padding: 22px 24px 26px; }
+  .proj-body h3 { font-size: 1.2rem; margin-bottom: 8px; }
+  .proj-body p { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 16px; }
+  .proj-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tag { font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--line); color: var(--text-dim); }
+  .proj-link { font-size: 0.86rem; color: var(--accent); font-weight: 600; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 46px 0 calc(46px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; color: var(--text-dim); font-size: 0.88rem; }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <div class="mark">R. <em>Quintero</em></div>
+  <nav class="topnav">
+    <a href="#trayectoria">Trayectoria</a>
+    <a href="#stack">Software</a>
+    <a href="#cualidades">Cualidades</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="https://wa.me/525529575435?text=Hola%21%20%F0%9F%91%8B" target="_blank">Contacto</a>
+  </nav>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-left">
+      <p class="eyebrow">Maestro Mayor de Obras — Córdoba, Argentina</p>
+      <h1>Rafael Joaquín<br><span class="last">Quintero</span></h1>
+      <p class="role">Técnico y creativo. Convierto requerimientos en soluciones constructivas claras, desde la interpretación del plano hasta la ejecución en obra.</p>
+      <p class="bio">Maestro Mayor de Obras recibido en la ciudad de Córdoba. Manejo avanzado de interfaces y software de diseño y representación gráfica, con la capacidad de aprender cualquier herramienta nueva que un proyecto requiera, de forma rápida y eficiente.</p>
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#proyectos">Ver proyectos</a>
+        <a class="btn btn-outline" href="https://wa.me/525529575435?text=Hola%21%20%F0%9F%91%8B" target="_blank">Contactarme</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="photo-frame">
+        <img src="img/image1.png" alt="Rafael Quintero">
+        <div class="photo-caption">
+          <span>Rafael Quintero</span>
+          <span>Córdoba, Arg.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= TRAYECTORIA ================= -->
+<section id="trayectoria">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Formación &amp; trayectoria</h2>
+      <span class="sec-num">Estudio, obra y estudio de arquitectura</span>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-tag">Formación</div>
+        <h3>Maestro Mayor de Obras</h3>
+        <div class="org">Instituto Técnico y Orientado P. Albarracín — Sarmiento</div>
+        <p>Formación técnica orientada a la construcción: interpretación de planos, sistemas constructivos, instalaciones y dirección de obra.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-tag">Experiencia freelance</div>
+        <h3>Instalaciones de obra</h3>
+        <div class="org">Trabajo independiente</div>
+        <p>Ejecución de instalaciones de agua, eléctricas, cloacales, pluviales y de gas en obras particulares.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-tag">Pasantía</div>
+        <h3>Dibujante técnico y gestor de proyecto</h3>
+        <div class="org">Gora — Estudio de Arquitectura</div>
+        <p>Elaboración de documentación técnica y planos, junto a tareas de gestión y seguimiento de proyectos de arquitectura.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOFTWARE / STACK ================= -->
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Software y herramientas</h2>
+      <span class="sec-num">Programas que utilizo habitualmente</span>
+    </div>
+    <div class="stack-grid">
+
+      <div class="stack-item">
+        <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="17.5" cy="6.5" r="2.2"/><path d="M15.9 8.1 6 18M6 18l3.2-.5L18 8.7"/><path d="M6 18l-1.5 3.5L8 20"/></svg>
+        <div class="name">AutoCAD</div>
+        <div class="level">Avanzado</div>
+      </div>
+
+      <div class="stack-item">
+        <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3 3 8.5 12 14l9-5.5L12 3z"/><path d="M3 8.5v7L12 21l9-5.5v-7"/><path d="M12 14v7"/></svg>
+        <div class="name">SketchUp</div>
+        <div class="level">Avanzado</div>
+      </div>
+
+      <div class="stack-item">
+        <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="10" width="16" height="10" rx="1"/><path d="M7 10V6.5A2.5 2.5 0 0 1 9.5 4h5A2.5 2.5 0 0 1 17 6.5V10"/><path d="M8 14h2M14 14h2M8 17h8"/></svg>
+        <div class="name">Revit</div>
+        <div class="level">Intermedio</div>
+      </div>
+
+      <div class="stack-item">
+        <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.8 5.8l2.1 2.1M16.1 16.1l2.1 2.1M18.2 5.8l-2.1 2.1M7.9 16.1l-2.1 2.1"/></svg>
+        <div class="name">V-Ray</div>
+        <div class="level">Intermedio</div>
+      </div>
+
+      <div class="stack-item">
+        <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="M3 16.5l5-5 4 4 3.5-3.5L21 16"/></svg>
+        <div class="name">Photoshop</div>
+        <div class="level">Intermedio</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= CUALIDADES ================= -->
+<section id="cualidades">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Cualidades &amp; áreas de experiencia</h2>
+      <span class="sec-num">Lo que aporto a cada proyecto</span>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Experiencia en obra</strong><span>Instalaciones de agua, electricidad, gas, cloaca, pluviales y otras redes.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Interpretación de planos</strong><span>Lectura técnica de planos de arquitectura, estructura e instalaciones.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Documentación técnica</strong><span>Elaboración y control de la documentación de proyecto y obra.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Conocimiento constructivo</strong><span>Dominio de sistemas y procesos constructivos tradicionales y modernos.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Cómputo y presupuesto</strong><span>Cuantificación de materiales y estimación de costos de obra.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Planificación de obra</strong><span>Organización de etapas, tiempos y recursos de ejecución.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Control de calidad</strong><span>Supervisión de tareas y verificación de terminaciones en obra.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Representación gráfica</strong><span>Planos, cortes, detalles constructivos y modelado 3D.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Manejo de software</strong><span>Aprendizaje rápido y eficiente de nuevas herramientas digitales.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Comunicación</strong><span>Diálogo claro y efectivo con clientes, equipos y proveedores.</span></div>
+      </div>
+
+      <div class="skill-item">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg>
+        <div class="txt"><strong>Habilidades blandas</strong><span>Trabajo en equipo, adaptabilidad y resolución de problemas.</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="proyectos">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Proyectos</h2>
+      <span class="sec-num">Documentación técnica y modelados — enlaces a Drive</span>
+    </div>
+    <div class="proj-grid">
+
+      <article class="proj-card">
+        <div class="proj-thumb">
+          <img src="img/cap1.png" alt="Detalle constructivo de muro">
+        </div>
+        <div class="proj-body">
+          <h3>Proyecto Valle del Sol-CBA.ARG</h3>
+          <p>Vivienda unifamiliar desarrollada en el barrio cordobés de Valle del Sol, Cordoba, Argentina.</p>
+          <div class="proj-tags">
+            <span class="tag">AutoCAD</span>
+            <span class="tag">Vivienda unifamiliar</span>
+          </div>
+          <a class="proj-link" href="https://drive.google.com/drive/folders/1bpITzZuaK8lSoH8BHhf4ClVLCHNkCMiN?usp=sharing" target="_blank" rel="noopener">Ver en Drive →</a>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb">
+          <img src="img/cap2.png" alt="Modelado 3D de vivienda">
+        </div>
+        <div class="proj-body">
+          <h3>Gora Arquitectura</h3>
+          <p>Proyecto aprobado y posteriormente ejecutado durante desarrollado durante mi pasantia en Gora Arquitectura. Participé desde diseño hasta gestion y seguimiento de obra. </p>
+          <div class="proj-tags">
+            <span class="tag">Autocad</span>
+            <span class="tag">Gestion</span>
+          </div>
+          <a class="proj-link" href="https://drive.google.com/drive/folders/1kdtYzEDTzdzLX8x3yLdh6TtAHFS82g_Y?usp=sharing" target="_blank" rel="noopener">Ver en Drive →</a>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb">
+          <img src="img/cap3.png" alt="Plantas y cortes de edificio">
+        </div>
+        <div class="proj-body">
+          <h3>Proyecto edificio Alberdi.</h3>
+          <p>Edificio de uso mixto en el barrio cordobes de Alberdi. Proyecto en el que se diseñó conforme a necesidades, espacios y contexto.</p>
+          <div class="proj-tags">
+            <span class="tag">AutoCAD</span>
+            <span class="tag">SketchUp</span>
+          </div>
+          <a class="proj-link" href="https://drive.google.com/drive/folders/1-xFK3O_KKjzmrJxZ-hFdtjgONuBNYwja?usp=sharing" target="_blank" rel="noopener">Ver en Drive →</a>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb">
+          <img src="img/cap4.png" alt="Planos generales de proyecto">
+        </div>
+        <div class="proj-body">
+          <h3>Proyecto Mendiolaza</h3>
+          <p>Vivienda unifamiliar proyectada sobre un terreno con desnivel negativo, niveles los cuales fueron levantados in situ en el barrio cordobes de Mendiolaza</p>
+          <div class="proj-tags">
+            <span class="tag">AutoCAD</span>
+            <span class="tag">In Situ</span>
+          </div>
+          <a class="proj-link" href="https://drive.google.com/drive/folders/1vqqli8Wy77gyG8ikxvmQmjZmzYOzaO0g?usp=sharing" target="_blank" rel="noopener">Ver en Drive →</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<footer id="contacto" class="wrap">
+  <span>© 2026 Rafael Joaquín Quintero — Maestro Mayor de Obras.</span>
+  <span>
+    <a href="mailto:tu@email.com">tu@email.com</a> &nbsp;·&nbsp;
+    <a href="#">LinkedIn</a> &nbsp;·&nbsp;
+    <a href="#">Instagram</a>
+  </span>
+</footer>
+
+<script>
+  const bar = document.getElementById('topbar');
+  window.addEventListener('scroll', () => {
+    bar.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
